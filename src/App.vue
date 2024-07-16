@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, inject } from 'vue';
 import { reqresInstance } from './services/http.client.ts';
+
+const service = inject('reqresService');
 
 const postResult = ref('');
 const putResult = ref('');
@@ -12,7 +14,7 @@ const makeCall = async (httpMethod: string) => {
   switch (httpMethod) {
     case "POST":
       try {
-        const data = await reqresInstance.post(`users`, {
+        const data = await service.post(`users`, {
           firstName: "Vue3 Test",
         });
         console.log("Server: POST", data);
@@ -23,7 +25,7 @@ const makeCall = async (httpMethod: string) => {
       break;
     case "PUT":
       try {
-        const data = await reqresInstance.put(`users/3456`, {
+        const data = await service.put(`users/3456`, {
           firstName: "Vue3 Test",
         });
         console.log("Server: PUT", data);
@@ -35,7 +37,7 @@ const makeCall = async (httpMethod: string) => {
 
     case "PATCH":
       try {
-        const data = await reqresInstance.patch(`users/3456`, {
+        const data = await service.patch(`users/3456`, {
           firstName: "Vue3 Test",
         });
         console.log("Server: PATCH", data);
@@ -47,7 +49,7 @@ const makeCall = async (httpMethod: string) => {
 
     case "DELETE":
       try {
-        const data = await reqresInstance.delete(`users/57845`);
+        const data = await service.delete(`users/57845`);
         console.log("Server: DELETE", data);
 
         deleteResult.value =
